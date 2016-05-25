@@ -1,0 +1,47 @@
+#lang scheme
+;car primeiro elemento
+;cdr calda
+
+;(define a 5)
+;a
+;(define f (lambda (x) (zero? x)))
+;(f 2)
+;(define lista (list 1 2 3 4 5))
+
+;(cons 1 lista)
+;lista
+
+;Compara duas listas
+(define (equalList lis1 lis2)
+  (cond 
+    ((not (list? lis1)) (eq? lis1 lis2))
+    ((not (list? lis2)) #f)
+    ((null? lis1) (null? lis2))
+    ((null? lis2) #f)
+    ((equalList (car lis1) (car lis2))
+     (equalList (cdr lis1) (cdr lis2)))
+    (else #f)
+    )
+  )
+
+;(equalList (list 1 2 (list 1 2 3)) (list 1 2 (list 1 2 3)))
+
+;Verificar se elemento pertence a lista
+(define pertence?
+  (lambda (e c)
+    (if (null? c) #f
+        (or (equal? e (car c))
+            (pertence? e (cdr c)))
+      )
+    )
+  )
+;(define b (box (list 1 2 3)))
+;(unbox b)
+(define v #5(1 2 3))
+(vector-ref v 2)
+v
+(cons(cons (cons(cons v 1) 2)3)4)
+v
+
+
+;(include scheme)
