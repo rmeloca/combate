@@ -11,7 +11,7 @@
 ;(cons 1 lista)
 ;lista
 
-;Compara duas listas
+;Compara duas listas ou matriz
 (define (equalList lis1 lis2)
   (cond 
     ((not (list? lis1)) (eq? lis1 lis2))
@@ -42,6 +42,48 @@
 v
 (cons(cons (cons(cons v 1) 2)3)4)
 v
+;Soma
+(define (soma ele1 ele2)
+  (+ ele1 ele2)
+  )
+
+;Adiciona elemento em uma lista
+;posicao que devera estar o elemento
+;index controle interno
+(define (alteraLista lista posicao elemento index novaLista)
+  (cond
+    ((null? lista) novaLista)
+    ((not (eq? posicao index)) (alteraLista (cdr lista) posicao elemento (+ index 1) (concatenaLista novaLista (list(car lista)))))
+    ((eq? posicao index) (alteraLista (cdr lista) posicao elemento (+ index 1) (concatenaLista novaLista (list elemento))))
+    )
+)
+;Adiciona elemento em uma matriz
+;posicao que devera estar o elemento
+;index controle interno
+(define (alteraMatriz matriz posicaoi posicaoj elemento indexi indexj novaMatriz)
+  (cond
+    ((not (eq? posicaoi indexi)(alteraMatriz (cdr matriz) posicaoi posicaoj elemento (+ indexi 1) indexj (concatenaLista novaMatriz (car matriz)))))
+    ((eq? posicaoi indexi)(alteraLista (car matriz) posicaoj elemento indexj ))
+    )
+  )
+;Concatena duas listas
+(define (concatenaLista lista1 lista2)
+  (if (null? lista1)
+      lista2
+      (cons (car lista1) (concatenaLista (cdr lista1) lista2))
+      )
+  )
 
 
+(define listax (list 0 0 5 0))
+listax
+(define listay (list ))
+listay
+
+;(concatenaLista listax (list (car listay)))
+
+
+;(cons listay (cons 1 (cons 2 (cons 3 2))));
+;(car listay)
+(alteraLista listax 1 5 0 listay)
 ;(include scheme)
