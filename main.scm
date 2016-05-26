@@ -1,38 +1,63 @@
 #lang scheme
 
 (require "tabuleiro.scm")
+(require "direcao.scm")
 
-tabuleiro
+;define uma instância de teste
+(define instanciaTeste
+	(list
+		(list GENERAL SOLDADO BANDEIRA)
+		(list TERRITORIO TERRITORIO TERRITORIO)
+		(list TENENTE BANDEIRA SOLDADO)
+	)
+)
+
+;define a instância inicial de um tabuleiro sem estratégia montada
+(define tabuleiro
+	(list
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+	)
+)
 
 ;define método que opera sobre um tabuleiro atribuindo uma estratégia randômica
 (define (initialize tabuleiro)
-	(list (random 11))
+	tabuleiro
 )
 
 ;define mudança de turno
 (define (modificarTurno turno)
-	null;
+	(if
+		(eq? turno 1)
+		2
+		1
+	)
 )
 
 ;define o motor do jogo. laço principal
 (define (motor tabuleiro turno)
 	(if
 		(haveWinner tabuleiro)
-		(print "Vencedor")
-		(motor
-			(move
-				(canMove
-					(if
-						(eq? turno 1)
-						(coordenada (read) (read)) (read) tabuleiro
-						(heuristica tabuleiro)
-					)
-				)
+		"Vencedor"
+		(if
+			(eq? turno 1)
+			(motor
+				(move (coordenada (read) (read)) NORTH tabuleiro)
+				(modificarTurno turno)
 			)
-			(modificarTurno turno)
+			(motor (move (coordenada 1 2) SOUTH tabuleiro) (modificarTurno turno))
 		)
 	)
 )
 
 ;executa o jogo
-(motor (initialize tabuleiro))
+(motor (initialize tabuleiro) 1)
