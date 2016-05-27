@@ -1,9 +1,11 @@
 #lang scheme
 
-;car primeiro elemento
-;cdr calda
+(provide getQuantidadeElementosMatriz)
+(provide setElementoMatriz)
+(provide getElementoMatriz)
+(provide swap)
 
-;Compara duas listas ou matriz
+;Compara duas listas ou matrizes
 (define (equalList lis1 lis2)
 	(cond 
 		((not (list? lis1)) (eq? lis1 lis2))
@@ -32,28 +34,14 @@
 	)
 )
 
-;Soma
-(define (soma ele1 ele2)
-	(+ ele1 ele2)
-)
-
+;DEPRECATED indexes não encaixava na solução
 ;Adiciona elemento em uma lista
 ;posicao que devera estar o elemento
 ;index controle interno
 (define (alteraLista lista posicao elemento index novaLista)
 	(cond
-		((null? lista) novaLista)
-		(
-			(not (eq? posicao index))
-			(alteraLista
-				(cdr lista)
-				posicao
-				elemento
-				(+ index 1)
-				(concatenaLista novaLista (list (car lista)))
-			)
-		)
-		(
+		[(null? lista) novaLista]
+		[
 			(eq? posicao index)
 			(alteraLista
 				(cdr lista)
@@ -62,17 +50,39 @@
 				(+ index 1)
 				(concatenaLista novaLista (list elemento))
 			)
-		)
+		]
+		[
+			else
+			(alteraLista
+				(cdr lista)
+				posicao
+				elemento
+				(+ index 1)
+				(concatenaLista novaLista (list (car lista)))
+			)
+		]
 	)
 )
 
+;DEPRECATED indexes não encaixava na solução
 ;Adiciona elemento em uma matriz
 ;posicao que devera estar o elemento
 ;index controle interno
 (define (alteraMatriz matriz posicaoi posicaoj elemento indexi indexj novaMatriz)
 	(cond
-		((not (eq? posicaoi indexi)(alteraMatriz (cdr matriz) posicaoi posicaoj elemento (+ indexi 1) indexj (concatenaLista novaMatriz (car matriz)))))
-		((eq? posicaoi indexi)(alteraLista (car matriz) posicaoj elemento indexj ))
+		[(eq? posicaoi indexi) (alteraLista (car matriz) posicaoj elemento indexj null)]
+		[
+			else
+			(alteraMatriz
+				(cdr matriz)
+				posicaoi
+				posicaoj
+				elemento
+				(+ indexi 1)
+				indexj
+				(concatenaLista novaMatriz (car matriz))
+			)
+		]
 	)
 )
 
@@ -85,32 +95,76 @@
 	)
 )
 
+;obtém a quantidade de vezes que um elemento aparece em uma lista
+(define (getQuantidadeElementosLista lista elemento)
+	(cond
+		[(null? lista) 0]
+		[(eq? (car lista) elemento) (+ 1 (getQuantidadeElementosLista (cdr lista) elemento))]
+		[else (getQuantidadeElementosLista (cdr lista) elemento)]
+	)
+)
 
-;(define a 5)
-;a
-;(define f (lambda (x) (zero? x)))
-;(f 2)
-;(define lista (list 1 2 3 4 5))
+;obtém a quantidade de vezes que um elemento aparece em uma matriz
+(define (getQuantidadeElementosMatriz matriz elemento)
+	(cond
+		[(null? matriz) 0]
+		[
+			(list? (car matriz))
+			(+
+				(getQuantidadeElementosLista (car matriz) elemento)
+				(getQuantidadeElementosMatriz (cdr matriz) elemento)
+			)
+		]
+	)
+)
 
-;(cons 1 lista)
-;lista
-;(equalList (list 1 2 (list 1 2 3)) (list 1 2 (list 1 2 3)))
+;altera um elemento da lista
+(define (setElementoLista lista posicao elemento)
+	(cond
+		[(null? lista) null]
+		[(zero? posicao) (cons elemento (cdr lista))]
+		[else (cons (car lista) (setElementoLista (cdr lista) (- posicao 1) elemento))]
+	)
+)
 
-;(define b (box (list 1 2 3)))
-;(unbox b)
-(define v #5(1 2 3))
-(vector-ref v 2)
-v
-(cons(cons (cons(cons v 1) 2)3)4)
-v
+;altera um elemento de uma matriz
+(define (setElementoMatriz matriz i j elemento)
+	(cond
+		[(zero? i) (cons (setElementoLista (car matriz) j elemento) (cdr matriz))]
+		[else (cons (car matriz) (setElementoMatriz (cdr matriz) (- i 1) j elemento))]
+	)
+)
 
-(define listax (list 0 0 5 0))
-listax
-(define listay (list ))
-listay
+;obtém um elemento dado uma posição de uma lista
+(define (getElementoLista lista posicao)
+	(cond
+		[(zero? posicao) (car lista)]
+		[else (getElementoLista (cdr lista) (- posicao 1))]
+	)
+)
 
-;(concatenaLista listax (list (car listay)))
+;obtém um elemento dado uma posição de uma matriz
+(define (getElementoMatriz matriz i j)
+	(cond
+		[(zero? i) (getElementoLista (car matriz) j)]
+		[else (getElementoMatriz (cdr matriz) (- i 1) j)]
+	)
+)
 
-;(cons listay (cons 1 (cons 2 (cons 3 2))));
-;(car listay)
-(alteraLista listax 1 5 0 listay)
+(define (swap matriz i j k l temp)
+	(setElementoMatriz
+		(setElementoMatriz
+			matriz
+			i
+			j
+			(getElementoMatriz
+				matriz
+				k
+				l
+			)
+		)
+		k
+		l
+		temp
+	)
+)

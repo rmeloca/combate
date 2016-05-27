@@ -6,7 +6,7 @@
 ;define uma instância de teste
 (define instanciaTeste
 	(list
-		(list GENERAL SOLDADO BANDEIRA)
+		(list (getEnemyPiece GENERAL) (getEnemyPiece SOLDADO) (getEnemyPiece BANDEIRA))
 		(list TERRITORIO TERRITORIO TERRITORIO)
 		(list TENENTE BANDEIRA SOLDADO)
 	)
@@ -60,4 +60,5 @@
 )
 
 ;executa o jogo
-(motor (initialize tabuleiro) 1)
+(print instanciaTeste 1)
+(motor (initialize instanciaTeste) 1)
