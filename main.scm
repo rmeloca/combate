@@ -51,10 +51,10 @@
 		(if
 			(eq? turno 1)
 			(motor
-				(move (coordenada (read) (read)) NORTH tabuleiro)
+				(move (getCoordenada (read) (read)) NORTH tabuleiro)
 				(modificarTurno turno)
 			)
-			(motor (move (coordenada 1 2) SOUTH tabuleiro) (modificarTurno turno))
+			(motor (move (getCoordenada 1 2) SOUTH tabuleiro) (modificarTurno turno))
 		)
 	)
 )

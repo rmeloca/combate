@@ -1,0 +1,1 @@
+("5.3.6" ("625ed21d66775c0db1c7014353fbf099ad278cae" . "9867938e73921081085018c93e04315b18c8f9b9") (collects #"scheme" #"main.rkt") #"/data/documents/workspace/combate/utils.scm" #"/data/documents/workspace/combate/direcao.scm" (collects #"scheme" #"lang" #"reader.rkt"))

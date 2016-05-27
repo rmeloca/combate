@@ -6,7 +6,7 @@
 (provide haveWinner)
 (provide move)
 (provide canMove)
-(provide coordenada)
+(provide getCoordenada)
 (provide heuristica)
 (provide print)
 (provide getQuantidadeElementos)
@@ -44,21 +44,21 @@
 
 ;obtém o tamanho do tabuleiro
 (define (size tabuleiro)
-	10
+	(getNumberOfLines tabuleiro)
 )
 
 ;define as coordenadas
-(define (coordenada x y)
+(define (getCoordenada x y)
 	(list x y)
 )
 
 ;obtém coordenada para onde a peça irá
 (define (getMoveCoordenada coordenada direcao)
 	(cond
-		[(eq? direcao NORTH) (coordenada (+ 1 (car coordenada)) (cdr coordenada))]
-		[(eq? direcao SOUTH) (coordenada (- 1 (car coordenada)) (cdr coordenada))]
-		[(eq? direcao WEST) (coordenada (car coordenada) (- 1 (cdr coordenada)))]
-		[(eq? direcao EAST) (coordenada (car coordenada) (+ 1 (cdr coordenada)))]
+		[(eq? direcao NORTH) (getCoordenada (- 1 (car coordenada)) (car (cdr coordenada)))]
+		[(eq? direcao SOUTH) (getCoordenada (+ 1 (car coordenada)) (car (cdr coordenada)))]
+		[(eq? direcao WEST) (getCoordenada (car coordenada) (+ 1 (car (cdr coordenada))))]
+		[(eq? direcao EAST) (getCoordenada (car coordenada) (- 1 (car (cdr coordenada))))]
 		[else null]
 	)
 )
@@ -87,9 +87,8 @@
 	(cond
 		[(< (car coordenada) 0) #f]
 		[(> (car coordenada) (size tabuleiro)) #f]
-		[(< (cdr coordenada) 0) #f]
-
-		[(> (cdr coordenada) (size tabuleiro)) #f]
+		[(< (car (cdr coordenada)) 0) #f]
+		[(> (car (cdr coordenada)) (size tabuleiro)) #f]
 		[else #t]
 	)
 )
@@ -118,9 +117,9 @@
 (define (atacar coordenada coordenadaAtaque tabuleiro)
 	(swap
 		tabuleiro
-		(car coordenada) (cdr coordenada)
-		(car coordenadaAtaque) (cdr coordenadaAtaque)
-		(getElementoMatriz tabuleiro (car coordenada) (cdr coordenada))
+		(car coordenada) (car (cdr coordenada))
+		(car coordenadaAtaque) (car (cdr coordenadaAtaque))
+		(getElementoMatriz tabuleiro (car coordenada) (car (cdr coordenada)))
 	)
 )
 

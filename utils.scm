@@ -3,6 +3,7 @@
 (provide getQuantidadeElementosMatriz)
 (provide setElementoMatriz)
 (provide getElementoMatriz)
+(provide getNumberOfLines)
 (provide swap)
 
 ;Compara duas listas ou matrizes
@@ -149,6 +150,29 @@
 		[(zero? i) (getElementoLista (car matriz) j)]
 		[else (getElementoMatriz (cdr matriz) (- i 1) j)]
 	)
+)
+
+;retorna o tamanho de uma lista
+(define (listSize lista)
+	(cond
+		[(not (list? lista)) null]
+		[(null? lista) 0]
+		[else (+ 1 (listSize (cdr lista)))]
+	)
+)
+
+;retorna o número de linhas de uma matriz
+(define (getNumberOfLines matriz)
+	(listSize matriz)
+)
+
+;responde se o tamanho da lista é igual ao tamanho dado
+(define (isSizeEquals lista size)
+	(eq? (listSize lista) size)
+)
+
+(define (isQuadrada matriz)
+	(eq? (listSize (car matriz)) (listSize matriz))
 )
 
 (define (swap matriz i j k l temp)
