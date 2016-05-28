@@ -15,8 +15,8 @@
 	(cond
 		[(eq? direcao NORTH) (getCoordenada (- (car coordenada) 1) (car (cdr coordenada)))]
 		[(eq? direcao SOUTH) (getCoordenada (+ (car coordenada) 1) (car (cdr coordenada)))]
-		[(eq? direcao WEST) (getCoordenada (car coordenada) (+ (car (cdr coordenada)) 1))]
-		[(eq? direcao EAST) (getCoordenada (car coordenada) (- (car (cdr coordenada)) 1))]
+		[(eq? direcao WEST) (getCoordenada (car coordenada) (- (car (cdr coordenada)) 1))]
+		[(eq? direcao EAST) (getCoordenada (car coordenada) (+ (car (cdr coordenada)) 1))]
 		[else null]
 	)
 )

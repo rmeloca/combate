@@ -112,10 +112,18 @@
 	(setElementoMatriz tabuleiro (car coordinate) (car (cdr coordinate)) piece)
 )
 
+(define (printPiece piece turno)
+	(cond
+		[(isPieceEquals piece TERRITORIO) (printf "~a " (toString piece))]
+		[(not (isMyPiece piece turno)) (printf "XXX ")]
+		[else (printf "~a " (toString piece))]
+	)
+)
+
 (define (printLine line turno)
 	(cond
 		[(null? line) (newline)]
-		[(printf "~a " (toString (car line))) (printLine (cdr line) turno)]
+		[(printPiece (car line) turno) (printLine (cdr line) turno)]
 	)
 )
 

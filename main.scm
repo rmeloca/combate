@@ -75,7 +75,7 @@
 				[
 					(printTabuleiro tabuleiro turno)
 					(motor
-						(move (getCoordenada (read) (read)) NORTH tabuleiro turno)
+						(move (getCoordenada (read) (read)) (parseDirecao (read)) tabuleiro turno)
 						(modificarTurno turno)
 					)
 				]
