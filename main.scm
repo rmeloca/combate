@@ -2,15 +2,8 @@
 
 (require "tabuleiro.scm")
 (require "direcao.scm")
-
-;define uma instância de teste
-(define instanciaTeste
-	(list
-		(list (getEnemyPiece GENERAL) (getEnemyPiece SOLDADO) (getEnemyPiece BANDEIRA))
-		(list TERRITORIO TERRITORIO TERRITORIO)
-		(list TENENTE BANDEIRA SOLDADO)
-	)
-)
+(require "piece.scm")
+(require "coordenada.scm")
 
 ;define a instância inicial de um tabuleiro sem estratégia montada
 (define tabuleiro
@@ -25,13 +18,41 @@
 		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
 		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
 		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+	)
+)
+
+;1 bandeira
+;7 bombas
+;1 espião
+;8 soldados
+;5 cabos
+;4 sargentos
+;4 tenentes
+;4 capitães
+;3 majores
+;2 coronéis
+;1 general
+;1 marechal
+
+;define uma instância de teste
+(define instanciaTeste
+	(list
+		(list (getEnemyPiece CAPITAO) (getEnemyPiece BANDEIRA) (getEnemyPiece GENERAL) (getEnemyPiece CAPITAO) (getEnemyPiece CAPITAO) (getEnemyPiece MAJOR) (getEnemyPiece MAJOR) (getEnemyPiece MAJOR) (getEnemyPiece MARECHAL) (getEnemyPiece CAPITAO))
+		(list (getEnemyPiece ESPIAO) (getEnemyPiece CORONEL) (getEnemyPiece TENENTE) (getEnemyPiece TENENTE) (getEnemyPiece TENENTE) (getEnemyPiece CORONEL) (getEnemyPiece TENENTE) (getEnemyPiece SARGENTO) (getEnemyPiece SARGENTO) (getEnemyPiece SARGENTO))
+		(list (getEnemyPiece SARGENTO) (getEnemyPiece CABO) (getEnemyPiece CABO) (getEnemyPiece CABO) (getEnemyPiece SOLDADO) (getEnemyPiece SOLDADO) (getEnemyPiece SOLDADO) (getEnemyPiece SOLDADO) (getEnemyPiece SOLDADO) (getEnemyPiece SOLDADO))
+		(list (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece SOLDADO) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece SOLDADO) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA))
 		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+		(list BOMBA BOMBA SOLDADO BOMBA BOMBA SOLDADO BOMBA BOMBA BOMBA BOMBA)
+		(list SARGENTO CABO CABO CABO SOLDADO SOLDADO SOLDADO SOLDADO SOLDADO SOLDADO)
+		(list ESPIAO CORONEL TENENTE TENENTE TENENTE CORONEL TENENTE SARGENTO SARGENTO SARGENTO)
+		(list CAPITAO BANDEIRA GENERAL CAPITAO CAPITAO MAJOR MAJOR MAJOR MARECHAL CAPITAO)
 	)
 )
 
 ;define método que opera sobre um tabuleiro atribuindo uma estratégia randômica
 (define (initialize tabuleiro)
-	tabuleiro
+	(setPiece (getEnemyPiece CAPITAO) (getCoordenada 0 0) tabuleiro)
 )
 
 ;define mudança de turno
@@ -47,18 +68,25 @@
 (define (motor tabuleiro turno)
 	(if
 		(haveWinner tabuleiro)
-		"Vencedor"
+		(displayln "Vencedor")
 		(if
 			(eq? turno 1)
+			(cond
+				[
+					(printTabuleiro tabuleiro turno)
+					(motor
+						(move (getCoordenada (read) (read)) NORTH tabuleiro turno)
+						(modificarTurno turno)
+					)
+				]
+			)
 			(motor
-				(move (getCoordenada (read) (read)) NORTH tabuleiro)
+				(move (getCoordenada 1 2) SOUTH tabuleiro turno)
 				(modificarTurno turno)
 			)
-			(motor (move (getCoordenada 1 2) SOUTH tabuleiro) (modificarTurno turno))
 		)
 	)
 )
 
 ;executa o jogo
-(print instanciaTeste 1)
 (motor (initialize instanciaTeste) 1)
