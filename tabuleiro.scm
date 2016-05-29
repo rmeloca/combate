@@ -13,6 +13,7 @@
 (provide getQuantidadeElementos)
 (provide getEnemyPiece)
 (provide setPiece)
+(provide heuristica)
 
 ;retorna uma nova lista com o elemento dado por parâmetro adicionado ao final desta
 (define (addElemento tabuleiro elemento)
@@ -59,9 +60,40 @@
 	)
 )
 
+;verifica se é possível mover uma coordenada em alguma direção
+(define (isPossibleMove coordenada tabuleiro turno)
+	(cond
+		[(canMove coordenada NORTH tabuleiro turno) #t]
+		[(canMove coordenada SOUTH tabuleiro turno) #t]
+		[(canMove coordenada WEST tabuleiro turno) #t]
+		[(canMove coordenada EAST tabuleiro turno) #t]
+		[else #f]
+	)
+)
+
+;calcula possíveis movimentos no tabuleiro
+(define (getPossibleMovementsOnLines tabuleiro turno x y)
+	(cond
+		[(zero? y) null]
+		[(zero? x)
+			(getPossibleMovementsOnLines tabuleiro turno (size tabuleiro) (- y 1))
+		]
+		[
+			(isPossibleMove (getCoordenada x y) tabuleiro turno)
+			(cons (getCoordenada x y) (getPossibleMovementsOnLines tabuleiro turno (- x 1) y))
+		]
+		[else (getPossibleMovementsOnLines tabuleiro turno (- x 1) y)]
+	)
+)
+
+;obtém a lista dos possíveis movimentos
+(define (getPossibleMovements turno tabuleiro)
+	(getPossibleMovementsOnLines tabuleiro turno (size tabuleiro) (size tabuleiro))
+)
+
 ;calcula a jogada do computador
-(define (heuristica)
-	null
+(define (heuristica turno tabuleiro)
+	(car (getPossibleMovements turno tabuleiro))
 )
 
 ;retorna boolean se há vencedor

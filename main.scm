@@ -81,7 +81,7 @@
 				]
 			)
 			(motor
-				(move (getCoordenada 1 2) SOUTH tabuleiro turno)
+				(move (heuristica turno tabuleiro) SOUTH tabuleiro turno)
 				(modificarTurno turno)
 			)
 		)
