@@ -22,7 +22,7 @@
 
 ;obtém o tamanho do tabuleiro
 (define (size tabuleiro)
-	(- (getNumberOfLines tabuleiro) 1)
+	 (getNumberOfLines tabuleiro)
 )
 
 ;retorna boolean se é possível mover a peça para o direção dada

@@ -40,60 +40,64 @@
 ;1 primeira maior que segunda
 ;-1 primeira menor que segunda
 (define (comparePiece a b)
-	(cond
-		[(eq? (normalizePiece a) (normalizePiece b)) 0]
-		[(> (normalizePiece a) (normalizePiece b)) 1]
-		[(< (normalizePiece a) (normalizePiece b)) -1]
-	)
-)
+  (cond
+    [(eq? (normalizePiece a) (normalizePiece b)) 0]
+    [(> (normalizePiece a) (normalizePiece b)) 1]
+    [(< (normalizePiece a) (normalizePiece b)) -1]
+    )
+  )
 
 (define (isPieceEquals a b)
-	(eq? 0 (comparePiece a b))
-)
+  (eq? 0 (comparePiece a b))
+  )
 
 ;normaliza a peça
 (define (normalizePiece piece)
-	(if (>= piece 100)
-		(- piece 100)
-		piece
-	)
-)
+  (if (>= piece 100)
+      (- piece 100)
+      piece
+      )
+  )
 
 ;obtém inimigo
 (define (getEnemyPiece piece)
-	(+ piece 100)
-)
+  (+ piece 100)
+  )
 
 ;responde se a peça pertence ao jogador dado
 (define (isMyPiece piece turno)
-	(cond
-		[(isPieceEquals piece TERRITORIO) #f]
-		[(>= piece 100) (eq? turno 2)]
-		[else (eq? turno 1)]	
-	)
-)
+  (cond
+    [(isPieceEquals piece TERRITORIO) #f]
+    [(>= piece 100) (eq? turno 2)]
+    [else (eq? turno 1)]	
+    )
+  )
 
 ;responde se a primeira peça ganha a batalha contra a segunda
 (define (wonInvestida? a b)
-	(>= (comparePiece a b) 0)
-)
+  (cond
+    ((eq? (normalizePiece b) BANDEIRA) #t)
+    ((>= (comparePiece a b) 0) #t)
+    (else #f)
+    )
+  )
 
 ;converte uma peça para string
 (define (toString piece)
-	(cond
-		[(isPieceEquals piece TERRITORIO) "   "]
-		[(isPieceEquals piece ESPIAO) "ESP"]
-		[(isPieceEquals piece SOLDADO) "SOL"]
-		[(isPieceEquals piece CABO) "CAB"]
-		[(isPieceEquals piece SARGENTO) "SGT"]
-		[(isPieceEquals piece TENENTE) "TEN"]
-		[(isPieceEquals piece CAPITAO) "CPT"]
-		[(isPieceEquals piece MAJOR) "MAJ"]
-		[(isPieceEquals piece CORONEL) "CEL"]
-		[(isPieceEquals piece GENERAL) "GEN"]
-		[(isPieceEquals piece MARECHAL) "MAR"]
-		[(isPieceEquals piece BOMBA) "@@@"]
-		[(isPieceEquals piece BANDEIRA) "+++"]
-		[else "XXX"]
-	)
-)
+  (cond
+    [(isPieceEquals piece TERRITORIO) "   "]
+    [(isPieceEquals piece ESPIAO) "ESP"]
+    [(isPieceEquals piece SOLDADO) "SOL"]
+    [(isPieceEquals piece CABO) "CAB"]
+    [(isPieceEquals piece SARGENTO) "SGT"]
+    [(isPieceEquals piece TENENTE) "TEN"]
+    [(isPieceEquals piece CAPITAO) "CPT"]
+    [(isPieceEquals piece MAJOR) "MAJ"]
+    [(isPieceEquals piece CORONEL) "CEL"]
+    [(isPieceEquals piece GENERAL) "GEN"]
+    [(isPieceEquals piece MARECHAL) "MAR"]
+    [(isPieceEquals piece BOMBA) "@@@"]
+    [(isPieceEquals piece BANDEIRA) "+++"]
+    [else "XXX"]
+    )
+  )
