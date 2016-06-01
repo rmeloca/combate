@@ -5,6 +5,7 @@
 (provide getEnemyPiece)
 (provide toString)
 (provide wonInvestida?)
+(provide normalizePiece)
 
 (provide TERRITORIO)
 (provide ESPIAO)
@@ -76,6 +77,8 @@
 ;responde se a primeira peça ganha a batalha contra a segunda
 (define (wonInvestida? a b)
   (cond
+    ((and(eq? (normalizePiece a) CABO)(eq? (normalizePiece b) BOMBA)) #t)
+    ((and(eq? (normalizePiece a) ESPIAO)(eq? (normalizePiece b) MARECHAL)) #t)
     ((eq? (normalizePiece b) BANDEIRA) #t)
     ((>= (comparePiece a b) 0) #t)
     (else #f)

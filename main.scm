@@ -5,6 +5,8 @@
 (require "piece.scm")
 (require "coordenada.scm")
 
+
+
 ;define a instância inicial de um tabuleiro sem estratégia montada
 (define tabuleiro
   (list
@@ -21,19 +23,6 @@
    )
   )
 
-;1 bandeira
-;7 bombas
-;1 espião
-;8 soldados
-;5 cabos
-;4 sargentos
-;4 tenentes
-;4 capitães
-;3 majores
-;2 coronéis
-;1 general
-;1 marechal
-
 ;define uma instância de teste
 (define instanciaTeste
   (list
@@ -43,16 +32,11 @@
    (list (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece SOLDADO) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece SOLDADO) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA) (getEnemyPiece BOMBA))
    (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
    (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
-   (list BOMBA BOMBA SOLDADO BOMBA BOMBA SOLDADO BOMBA BOMBA BOMBA BOMBA)
-   (list SARGENTO CABO CABO CABO SOLDADO SOLDADO SOLDADO SOLDADO SOLDADO SOLDADO)
-   (list ESPIAO CORONEL TENENTE TENENTE TENENTE CORONEL TENENTE SARGENTO SARGENTO SARGENTO)
-   (list CAPITAO BANDEIRA GENERAL CAPITAO CAPITAO MAJOR MAJOR MAJOR MARECHAL CAPITAO)
+   (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+   (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+   (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
+   (list TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO TERRITORIO)
    )
-  )
-
-;define método que opera sobre um tabuleiro atribuindo uma estratégia randômica
-(define (initialize tabuleiro)
-  (setPiece (getEnemyPiece CAPITAO) (getCoordenada 0 0) tabuleiro)
   )
 
 ;define mudança de turno
@@ -82,12 +66,13 @@
     (else
      (displayln "Digite uma posição e direção válida!")
      (jogar tabuleiro turno)
-         )
+     )
     )
   )
 
 ;define o motor do jogo. laço principal
 (define (motor tabuleiro turno)
+  (define coordenada (heuristica turno tabuleiro))
   (if
    (haveWinner tabuleiro)
    (displayln "Vencedor")
@@ -103,7 +88,7 @@
        ]
       )
     (motor
-     (move (heuristica turno tabuleiro) SOUTH tabuleiro turno)
+     (move coordenada (getMelhorPosicaoParaMover coordenada tabuleiro turno) tabuleiro turno)
      (modificarTurno turno)
      )
     )
@@ -111,4 +96,4 @@
   )
 
 ;executa o jogo
-(motor (initialize instanciaTeste) 1)
+(motor (popularTabuleiro 9 9 tabuleiro) 1)
